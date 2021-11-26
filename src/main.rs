@@ -1,3 +1,9 @@
+mod core;
+
+use crate::core::blockchain::Blockchain;
+
 fn main() {
-    println!("Hello, Fire Core");
+    let bc = Blockchain::new();
+
+    println!("bc :{:?}", bc)
 }
