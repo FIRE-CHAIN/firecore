@@ -1,5 +1,6 @@
-// pub mod block;
+pub mod block;
 pub mod blockchain;
-// mod transaction;
+pub mod transaction;
 
-// pub use blockchain::*;
+pub use self::block::*;
+pub use self::transaction::*;
