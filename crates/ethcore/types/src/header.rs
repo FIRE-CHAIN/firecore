@@ -2,6 +2,7 @@
 use crate::bytes::Bytes;
 use ethereum_types::{Address, Bloom, H256, U256};
 
+#[derive(Clone)]
 pub struct Header {
     /// Parent hash.
     pub parent_hash: H256,

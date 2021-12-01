@@ -8,6 +8,7 @@ version = "0.1.0"
 [dependencies]
 blake2 = "0.9.2"
 common-types = {path = "crates/ethcore/types"}
+ethcore-blockchain = { path = "crates/ethcore/blockchain" }
 
 # [lib]
 # path = "src/lib.rs"

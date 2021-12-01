@@ -2,3 +2,8 @@
 edition = "2021"
 name = "ethcore-blockchain"
 version = "0.1.0"
+
+
+[dependencies]
+ethereum-types = "0.12.1"
+common-types = {path = "../types"}
