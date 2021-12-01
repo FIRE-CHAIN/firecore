@@ -1,0 +1,11 @@
+[package]
+edition = "2021"
+name = "common-types"
+version = "0.1.0"
+
+[dependencies]
+ethereum-types = "0.12.1"
+keccak-hash = "0.8.0"
+parity-bytes = "0.1.2"
+parity-crypto = {version = "0.9.0"}
+rlp = { version = "0.5.1" }

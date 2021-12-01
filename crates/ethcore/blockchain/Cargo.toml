@@ -1,0 +1,4 @@
+[package]
+edition = "2021"
+name = "ethcore-blockchain"
+version = "0.1.0"
