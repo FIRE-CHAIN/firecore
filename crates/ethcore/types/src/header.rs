@@ -1,5 +1,4 @@
-
-use crate::bytes::Bytes;
+use crate::{bytes::Bytes, BlockNumber};
 use ethereum_types::{Address, Bloom, H256, U256};
 
 #[derive(Clone)]
@@ -71,6 +70,14 @@ impl Header {
 
     pub fn set_timestamp(&mut self, a: u64) {
         change_field(&mut self.hash, &mut self.timestamp, a);
+    }
+
+    pub fn number(&self) -> BlockNumber {
+        self.number
+    }
+
+    pub fn difficulty(&self) -> &U256 {
+        &self.difficulty
     }
 }
 

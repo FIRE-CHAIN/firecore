@@ -1,10 +1,11 @@
-use std::collections::VecDeque;
+use std::{collections::VecDeque, iter::repeat_with};
 
 use common_types::{
-    block::Block,
-    transaction::{SignedTransaction, Transaction},
+    hash::keccak,
+    header::Header,
+    transaction::{Action, SignedTransaction, Transaction, TypedTransaction},
 };
-use ethereum_types::{Bloom, U256, H256};
+use ethereum_types::{Bloom, H256, U256};
 
 pub struct BlockOptions {
     /// Difficulty
@@ -78,8 +79,75 @@ impl BlockBuilder {
 
         BlockBuilder { blocks }
     }
-    
+
     pub fn last(&self) -> &Block {
         self.blocks.back().expect("No blocks in builder")
+    }
+
+    ///
+    pub fn add_block_with_random_transactions(&self) -> Self {
+        let count = rand::random::<u8>() as usize / 5;
+
+        let transactions = repeat_with(|| {
+            let data_len = rand::random::<u8>();
+            let data = repeat_with(|| rand::random::<u8>())
+                .take(data_len as usize)
+                .collect::<Vec<_>>();
+
+            TypedTransaction::Legacy(Transaction {
+                nonce: 0.into(),
+                gas_price: 0.into(),
+                gas: 100_000.into(),
+                action: Action::Create,
+                value: 100.into(),
+                data,
+            })
+            .sign(&keccak("").into(), None)
+        })
+        .take(count);
+
+        self.add_block_with_transactions(transactions)
+    }
+
+    pub fn add_block_with_transactions<T>(&self, transactions: T) -> Self
+    where
+        T: IntoIterator<Item = SignedTransaction>,
+    {
+        let transactions = transactions.into_iter().collect::<Vec<_>>();
+        self.add_blocks_with(1, || BlockOptions {
+            transactions: transactions.clone(),
+            ..Default::default()
+        })
+    }
+}
+
+pub struct Block {
+    /// Block header
+    pub header: Header,
+    /// Block transactions
+    pub transactions: Vec<SignedTransaction>,
+    /// Block uncles
+    pub uncles: Vec<Header>,
+}
+
+impl Block {
+    pub fn header(&self) -> Header {
+        self.header.clone()
+    }
+
+    pub fn number(&self) -> u64 {
+        self.header.number()
+    }
+
+    pub fn hash(&self) -> H256 {
+        todo!()
+    }
+
+    // pub fn encode(&self) -> encoded::Block {
+    //     encoded::Block::new(encode(self))
+    // }
+
+    pub fn difficulty(&self) -> U256 {
+        *self.header.difficulty()
     }
 }
