@@ -1,7 +1,7 @@
 use crate::{bytes::Bytes, BlockNumber};
 use ethereum_types::{Address, Bloom, H256, U256};
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct Header {
     /// Parent hash.
     pub parent_hash: H256,
@@ -78,6 +78,25 @@ impl Header {
 
     pub fn difficulty(&self) -> &U256 {
         &self.difficulty
+    }
+
+    pub fn set_parent_hash(&mut self, a: H256) {
+        change_field(&mut self.hash, &mut self.parent_hash, a);
+    }
+
+    pub fn set_number(&mut self, a: BlockNumber) {
+        change_field(&mut self.hash, &mut self.number, a)
+    }
+
+    pub fn set_log_bloom(&mut self, a: Bloom) {
+        change_field(&mut self.hash, &mut self.log_bloom, a)
+    }
+
+    pub fn set_difficulty(&mut self, a: U256) {
+        change_field(&mut self.hash, &mut self.difficulty, a)
+    }
+    pub fn set_transactions_root(&mut self, a: H256) {
+        change_field(&mut self.hash, &mut self.transactions_root, a)
     }
 }
 

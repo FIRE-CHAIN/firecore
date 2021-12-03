@@ -8,7 +8,7 @@ use rlp::{DecoderError, Rlp, RlpStream};
 
 type Bytes = Vec<u8>;
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub enum Action {
     Create,
     Call(Address),
@@ -37,12 +37,12 @@ impl rlp::Encodable for Action {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub enum TypedTransaction {
     Legacy(Transaction),
 }
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct Transaction {
     pub nonce: U256,
     pub gas_price: U256,
@@ -52,7 +52,7 @@ pub struct Transaction {
     pub data: Bytes,
 }
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct SignatureComponents {
     pub standard_v: u8,
     pub r: U256,
@@ -87,7 +87,7 @@ pub mod signature {
             }
     }
 }
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct UnverifiedTransaction {
     pub unsigned: TypedTransaction,
     pub signature: SignatureComponents,
@@ -95,10 +95,13 @@ pub struct UnverifiedTransaction {
     pub hash: H256,
 }
 
-#[derive(Clone)]
+#[derive(Clone,Debug)]
 pub struct SignedTransaction {
+    #[allow(dead_code)]
     transaction: UnverifiedTransaction,
+    #[allow(dead_code)]
     sender: Address,
+    #[allow(dead_code)]
     public: Option<Public>,
 }
 
